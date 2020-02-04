@@ -75,9 +75,13 @@ compress_old_logfiles() {
 	fi
 }
 
-if [[ "$end_time" > "$start_time" ]]; then
-	divide_logs_by_hours get_logs_by_keyword_and_timedelta
-	compress_old_logfiles
-else
-	echo 'Wrong timestamps. Try again'
-fi
+main() {
+	if [[ "$end_time" > "$start_time" ]]; then
+		divide_logs_by_hours get_logs_by_keyword_and_timedelta
+		compress_old_logfiles
+	else
+		echo 'Wrong timestamps. Try again'
+	fi
+}
+
+main "$@"
