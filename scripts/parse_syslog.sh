@@ -31,7 +31,7 @@ get_logs_by_keyword_and_timedelta() {
 }
 
 get_last_range_hour() {
-	(( ! ("$end_m" + "$end_s") )) && last_h=$(( end_h - 1 )) || last_h=$end_h
+  (( ! ("$end_m" + "$end_s") )) && last_h=$(( end_h - 1 )) || last_h=$end_h
 }
 
 divide_logs_by_hours() {
@@ -90,7 +90,7 @@ show_info() {
 }
 
 show_help () {
-	printf "
+  printf "
 Usage: %s [OPTIONS]
 Options:
   -h, --help    Show help text
