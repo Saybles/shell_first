@@ -109,14 +109,14 @@ parse_args() {
             if validate_timestamp "$2"; then
               start_time=$2; shift 2
             else
-			        show_info "$WRONG_TIMESTAMP_MSG"; return 1
+              show_info "$WRONG_TIMESTAMP_MSG"; return 1
             fi
             ;; 
         -re) 
             if validate_timestamp "$2"; then
               end_time=$2; shift 2
             else
-				      show_info "$WRONG_TIMESTAMP_MSG"; return 1
+              show_info "$WRONG_TIMESTAMP_MSG"; return 1
             fi
             ;;
         -k) 
