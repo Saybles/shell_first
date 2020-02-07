@@ -120,7 +120,7 @@ parse_args() {
             fi
             ;;
         -k) 
-           sought_for=${2-$DEFAULT_SOUGHT_FOR}
+           sought_for=$2
            name_template="syslog_${sought_for}_"
            shift 2
            ;;
