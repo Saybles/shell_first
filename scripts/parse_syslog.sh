@@ -59,7 +59,7 @@ divide_logs_by_hours() {
 
 compress_old_logfiles() {
   archive_name="${name_template}old.tar"
-  if [[ ${logfiles_to_compress[@]} ]]; then
+  if [[ $logfiles_to_compress ]]; then
     cd ${OUTPUT_DIR}
     {
       tar cvf "$archive_name" "${logfiles_to_compress[@]}"
