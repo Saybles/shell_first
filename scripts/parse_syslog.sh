@@ -35,7 +35,7 @@ get_last_range_hour() {
 }
 
 divide_logs_by_hours() {
-	logs=$1
+  logs=$1
   if [[ $logs ]]; then
     get_last_range_hour
     for h in $(seq "$start_h" "$last_h" ); do
@@ -58,9 +58,9 @@ divide_logs_by_hours() {
 }
 
 compress_old_logfiles() {
-	archive_name="${name_template}old.tar"
-	if [[ ${logfiles_to_compress[@]} ]]; then
-		cd ${OUTPUT_DIR}
+  archive_name="${name_template}old.tar"
+  if [[ ${logfiles_to_compress[@]} ]]; then
+    cd ${OUTPUT_DIR}
     {
       tar cvf "$archive_name" "${logfiles_to_compress[@]}"
       rm "${logfiles_to_compress[@]}"
@@ -68,7 +68,7 @@ compress_old_logfiles() {
       sudo chown root:root "$archive_name"
       cd -
     } >> /dev/null
-	fi
+  fi
 }
 
 
@@ -78,7 +78,7 @@ validate_args_count() {
 }
 
 validate_timestamp() {
-	[[ $1 =~ $TIMESTAMP_TEMPLATE ]] && return 0 || return 1
+  [[ $1 =~ $TIMESTAMP_TEMPLATE ]] && return 0 || return 1
 }
 
 validate_timerange() {
@@ -97,8 +97,8 @@ Options:
   -rs           Set timerange start timestamp
   -re           Set timerange end timestamp
   -k            Set keyword to search for
-	" "$(basename "$0")"
-	echo ""
+  " "$(basename "$0")"
+  echo ""
 }
 
 parse_args() {
@@ -146,10 +146,10 @@ parse_args() {
 
 
 main() {
-	if parse_args "$@"; then
-		divide_logs_by_hours "$(get_logs_by_keyword_and_timedelta)" &&
+  if parse_args "$@"; then
+    divide_logs_by_hours "$(get_logs_by_keyword_and_timedelta)" &&
     compress_old_logfiles
-	fi
+  fi
 }
 
 main "$@"
