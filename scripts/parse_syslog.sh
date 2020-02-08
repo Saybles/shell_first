@@ -59,8 +59,8 @@ compress_old_logfiles() {
     cd ${OUTPUT_DIR} || return 1
     tar cvf "$archive_name" "${logfiles_to_compress[@]}"
     rm "${logfiles_to_compress[@]}"
-    # chmod 700 "$archive_name"
-    # sudo chown root:root "$archive_name"
+    chmod 700 "$archive_name"
+    sudo chown root:root "$archive_name"
     cd - || return 1
   } >> /dev/null
 }
@@ -94,7 +94,7 @@ divide_logs_by_hours() {
 
   if [[ $logs ]]; then
     for h in $(seq "$first_hour" "$last_hour" ); do
-      logs_by_hour=$(echo "$1" | awk -v h="^$h:" '$3 ~ h { print $0 }')
+      logs_by_hour=$(echo "$logs" | awk -v h="^$h:" '$3 ~ h { print $0 }')
 
       logfile=$( write_logs_to_file "$logs_by_hour" "$h" )
 
