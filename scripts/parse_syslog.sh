@@ -2,10 +2,8 @@
 #
 # Search for special keyword in syslog file & filter logs between a time range.
 
-trap 'echo trap ERR' ERR SIGINT
-
 TO_BE_PARSED='/var/log/syslog'
-OUTPUT_DIR='output/parse_syslog1'
+OUTPUT_DIR='output/parse_syslog'
 TIMESTAMP_TEMPLATE="^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$"
 KW_ARGS_COUNT=3
 HOLD_COUNT=3
@@ -56,14 +54,13 @@ compress_old_logfiles() {
   local logfiles_to_compress=( "$@" )
   local archive_name="${NAME_TEMPLATE}_${CURRENT_DAY}_${ARCHIVE_POSTFIX}.tar"
 
-  # trap "Output directory can't be accessed." ERR
   {
     cd ${OUTPUT_DIR}
     tar cvf "$archive_name" "${logfiles_to_compress[@]}"
     rm "${logfiles_to_compress[@]}"
     # chmod 700 "$archive_name"
     # chown root:root "$archive_name"
-    cd - || return 1
+    cd -
   } >> /dev/null
 }
 
@@ -85,8 +82,6 @@ write_logs_to_file() {
 }
 
 divide_logs_by_hours() {
-  echo 'f0000000000000000000000'
-
   local logs=$1
   local first_hour=$2
   local last_hour=$3
@@ -100,9 +95,7 @@ divide_logs_by_hours() {
     for h in $(seq "$first_hour" "$last_hour" ); do
       logs_by_hour=$(echo "$logs" | awk -v h="^$h:" '$3 ~ h { print $0 }')
 
-      echo 'f0000000000000000000000'
       logfile=$( write_logs_to_file "$logs_by_hour" "$h" )
-      echo 'f0000000000000000000000'
 
       if [[ $(( h + HOLD_COUNT )) -le $last_hour ]]; then
         to_compress+=( "$( basename "$logfile" )" )
@@ -186,10 +179,6 @@ parse_args() {
 main() {
   set -e
   set -o pipefail
-  set -o history -o histexpand
-  # trap 'echo trap ERR' ERR
-  # trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-  # trap 'echo "\"${last_command}\" command failed with exit code $?."' EXIT
 
   if parse_args "$@"; then
     NAME_TEMPLATE="syslog_${sought_for}"
@@ -197,7 +186,7 @@ main() {
     first_hour=$( date --date="$start_time" "+%H" )
     last_hour=$( get_last_range_hour "$end_time" )
 
-    # mkdir -p "$OUTPUT_DIR"
+    mkdir -p "$OUTPUT_DIR"
 
     divide_logs_by_hours \
       "$( get_logs_by_keyword_and_timedelta "$start_time" \
