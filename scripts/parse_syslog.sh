@@ -58,8 +58,8 @@ compress_old_logfiles() {
     cd ${OUTPUT_DIR}
     tar cvf "$archive_name" "${logfiles_to_compress[@]}"
     rm "${logfiles_to_compress[@]}"
-    # chmod 700 "$archive_name"
-    # chown root:root "$archive_name"
+    chmod 700 "$archive_name"
+    chown root:root "$archive_name"
     cd -
   } >> /dev/null
 }
